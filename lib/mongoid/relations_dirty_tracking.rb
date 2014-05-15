@@ -30,7 +30,7 @@ module Mongoid
       @relations_shadow.each_pair do |rel_name, shadow_values|
         current_values = tracked_relation_attributes(rel_name)
         new_changes = transform_changes_by_type(current_values)
-        changes[rel_name] = new_changes if new_changes[0] != new_changes[1]
+        changes[rel_name] = new_changes if new_changes and new_changes[0] != new_changes[1]
       end
       changes
     end
