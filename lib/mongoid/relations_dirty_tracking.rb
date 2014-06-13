@@ -48,7 +48,7 @@ module Mongoid
 
     def transform_hash(h)
       o = h.inject({}) do |hash, element|
-        hash[element[0]] = element[1][0]
+        hash[element[0]] = element[1].is_a?(Array) ? element[1][0] : element[1]
         hash
       end
       m = h.inject({}) do |hash, element|
