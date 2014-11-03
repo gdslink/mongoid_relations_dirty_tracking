@@ -24,17 +24,6 @@ module Mongoid
       end
     end
 
-
-    def new_attributes
-      changes = {}
-      self.class.tracked_relations.each do |rel_name|
-        current_values = tracked_relation_attributes(rel_name)
-        new_changes = transform_changes_by_type(current_values)
-        changes[rel_name] = new_changes[1] if new_changes and new_changes[0] != new_changes[1]
-      end
-      changes
-    end
-
     def relation_changes
       changes = {}
       @relations_shadow.each_pair do |rel_name, shadow_values|
