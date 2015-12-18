@@ -114,6 +114,10 @@ module Mongoid
       @restore_changes
     end
 
+    def remove_change(name)
+      changes.delete(name.to_s)
+    end
+
     module ClassMethods
 
       def relations_dirty_tracking(options = {})
