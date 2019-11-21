@@ -80,6 +80,9 @@ module Mongoid
       changes or relations_changed?
     end
 
+    def restore_changes
+      @restore_changes = (changes || {}).merge previous_changes unless previous_changes.empty?
+    end
 
     def tracked_relation_attributes(rel_name)
       rel_name = rel_name.to_s
@@ -106,6 +109,14 @@ module Mongoid
       values
     end
 
+    def changes
+      return super if @restore_changes.nil?
+      @restore_changes
+    end
+
+    def remove_change(name)
+      changes.delete(name.to_s)
+    end
 
     module ClassMethods
 
