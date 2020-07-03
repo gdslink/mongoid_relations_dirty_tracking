@@ -90,12 +90,12 @@ module Mongoid
       if meta = relations[rel_name]
         values = if meta.relation == Mongoid::Relations::Embedded::One
                    method_to_call = send(rel_name).respond_to?(:changes_with_relations) ? :changes_with_relations : :changes
-                   send(rel_name) && send(rel_name).send(method_to_call).try(:clone).delete_if {|key, _| ['edited_by', 'locked'].include? key }
+                   send(rel_name) && send(rel_name).send(method_to_call).try(:clone)#.delete_if {|key, _| ['edited_by', 'locked'].include? key } #1.7.1
                  elsif meta.relation == Mongoid::Relations::Embedded::Many
                    send(rel_name) && send(rel_name).map {|child|
                      method_to_call = child.respond_to?(:changes_with_relations) ? :changes_with_relations : :changes
                      child.send(method_to_call)
-                   }.delete_if {|key, _| ['edited_by', 'locked'].include? key }
+                   }#.delete_if {|key, _| ['edited_by', 'locked'].include? key } #1.7.1
                  elsif meta.relation == Mongoid::Relations::Referenced::One
                    send(rel_name) && { "#{meta.key}" => send(rel_name)[meta.key] }
                  elsif meta.relation == Mongoid::Relations::Referenced::Many
