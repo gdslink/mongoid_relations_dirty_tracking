@@ -27,7 +27,17 @@ module Mongoid
     def relation_changes
       changes = {}
       @relations_shadow.each_pair do |rel_name, shadow_values|
+
         current_values = tracked_relation_attributes(rel_name)
+
+        if( shadow_values.is_a?(Array) && current_values.is_a?(Array) && shadow_values.count > current_values.count) then
+            $i = current_values.count
+            while $i < shadow_values.count  do
+                current_values << nil
+               $i +=1
+            end
+        end
+
         new_changes = transform_changes_by_type(current_values)
         changes[rel_name] = new_changes if new_changes and new_changes[0] != new_changes[1]
       end
@@ -58,11 +68,17 @@ module Mongoid
     end
 
     def transform_array(a)
+
       o, m = [], []
       a.each do |h|
-        r = transform_hash(h)
-        o << r[0]
-        m << r[1]
+        if(h != nil) then
+          r = transform_hash(h)
+          o << r[0]
+          m << r[1]
+        else
+          o << {}
+          m << nil
+        end
       end
       return [o, m]
     end
