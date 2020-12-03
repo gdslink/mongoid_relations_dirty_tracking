@@ -154,7 +154,10 @@ module Mongoid
       end
 
 
-      def tracked_relations
+      def tracked_relations(pForceUpdate=false)
+        if(pForceUpdate == true) then
+          @tracked_relations = nil
+        end 
         @tracked_relations ||= relations.keys.select {|rel_name| track_relation?(rel_name) }
       end
     end
