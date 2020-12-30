@@ -30,10 +30,10 @@ module Mongoid
 
         current_values = tracked_relation_attributes(rel_name)
 
-        if( shadow_values.is_a?(Array) && current_values.is_a?(Array) && shadow_values.count > current_values.count) then
+       if( shadow_values.is_a?(Array) && current_values.is_a?(Array) && shadow_values.count > current_values.count) then #some elements of the array have been deleted
             $i = current_values.count
             while $i < shadow_values.count  do
-                current_values << nil
+                current_values << nil #replace deleted elements with nil
                $i +=1
             end
         end
